@@ -1,0 +1,380 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Building an image-slider element using Angular 6</title>
+  <script src="./bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="./elements/codelab.html">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <style is="custom-style">
+    body {
+      font-family: "Roboto",sans-serif;
+      background: var(--google-codelab-background, #F8F9FA);
+    }
+  </style>
+  
+</head>
+<body unresolved class="fullbleed">
+
+  <google-codelab title="Building an image-slider element using Angular 6"
+                  environment="web"
+                  feedback-link="https://github.com/googlecodelabs/angular-slider-el/issues">
+    
+      <google-codelab-step label="Introduction" duration="20">
+        <p><a href="https://angular.io/guide/elements" target="_blank">Angular Elements</a> are Angular Components packaged as custom elements. They are currently supported by Chrome, Opera and Safari and are available in other browsers through polyfills. These elements can make use of the whole Angular Infrastructure with common Angular Interface and Change Detection Strategy. Once registered, these elements can be used within the browser.</p>
+<p>This codelab will walk you through creating your own image-slider angular component, and then will help you to transform it into an angular element so that it can work outside the Angular Framework. </p>
+<aside class="special"><p>Looking for more? Check out the talk <a href="https://www.youtube.com/watch?v=Z1gLFPLVJjY&t=4s" target="_blank">here</a>.</p>
+</aside>
+<h2><strong>What you will build</strong></h2>
+<table>
+<tr><td colspan="1" rowspan="1"><p><img style="max-width: 600.00px" src="img/67cef263370778ea.png"></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>In this codelab, you&#39;re going to build a image-slider element using angular 6. Your element wi:</p>
+<ul>
+<li>work like a HTML element in the browser</li>
+<li>Able to plugged in any framework that talks to the DOM.</li>
+</ul>
+</td></tr>
+</table>
+<h2 class="checklist"><strong>What you&#39;ll learn</strong></h2>
+<ul class="checklist">
+<li>How to make an image-slider custom component</li>
+<li>How to transform the image-slider custom component to custom element</li>
+<li>How to package the component so that it works inside the browser</li>
+</ul>
+<h2><strong>What you&#39;ll need</strong></h2>
+<ul>
+<li>A recent version of <a href="https://cli.angular.io/" target="_blank">angular-cli</a>. </li>
+<li><a href="https://github.com/aayusharora/angular-element-codelab.git" target="_blank">The sample code</a></li>
+<li>A text editor</li>
+<li>Basic knowledge of Angular Components</li>
+</ul>
+<p>This codelab is focused on Angular Elements. Non-relevant concepts and code blocks are glossed over and are provided for you to simply copy and paste.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting set up" duration="0">
+        <h2><strong>Download the Code</strong></h2>
+<p>Click the following link to download all the code for this codelab:</p>
+<p><a href="https://drive.google.com/file/d/15XsTw4aLzgI2eLbR9tfH5492cxYPfniG/view?usp=sharing" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download source code</paper-button></a></p>
+<p>Unpack the downloaded zip file. This will unpack a root folder <code>(angular-element-codelab-master)</code>, which contains </p>
+<p>two folders <code>( image-slider )</code> and <code>( image-slider-finished )</code>. We&#39;ll be doing all our coding work in a directory called image-slider.</p>
+<p><strong>Running the project</strong></p>
+<p>To run the project, you need to run the command ( ng-serve )  from the root directory ( image-slider ).</p>
+<p>Once the app is bootstrapped, you will be able to see this:</p>
+<p><img style="max-width: 285.00px" src="img/8c97f8a5435497d3.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Making an Image-Slider custom component ?" duration="10">
+        <h2><strong>How to create an image slider?</strong></h2>
+<p>For this image slider, bind buttons using angular click binding. We will create an array of objects containing images, alt tags, links etc. We will place these images one below each other in a container and translate the container on click.</p>
+<p>We are going to create an image-slider component and then will transform that into angular-element. </p>
+<ul>
+<li>Container for images and titles.</li>
+<li>An array containing the data</li>
+<li>Template to bind the data</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Implement the image-slider component" duration="40">
+        <p>There are multiple ways to get started with any project, in this case, to keep our project as simple as possible and concentrate on Angular Elements, we&#39;ve provided you with basic code along with the css.</p>
+<h2><strong>Creating an array and data service</strong></h2>
+<p>Remember, the sliderArray will contain:</p>
+<ul>
+<li>An img key for the image URL in the slider</li>
+<li>An alt tag to provide alt for the image</li>
+<li>A text to provide the description about the image</li>
+</ul>
+<p>The <code>data.json</code> file that is already in your <code>src/assets</code> directory should look something like this.</p>
+<pre><code>sliderArray = [
+ {img: &#39;http://bloquo.cc/img/works/1.jpg&#39;, alt: &#39;&#39;, text: &#39;365 Days Of weddings a year&#39;},
+ {img: &#39;http://bloquo.cc/img/works/2.jpg&#39;, alt: &#39;&#39;,  text: &#39;365 Days Of weddings a year&#39;},
+ {img: &#39;http://bloquo.cc/img/works/3.jpg&#39;, alt: &#39;&#39;, text: &#39;365 Days Of weddings a year&#39;},
+ {img: &#39;http://bloquo.cc/img/works/4.jpg&#39;, alt: &#39;&#39;,  text: &#39;365 Days Of weddings a year&#39;},
+ {img: &#39;http://bloquo.cc/img/works/5.jpg&#39;, alt: &#39;&#39;, text: &#39;365 Days Of weddings a year&#39;}
+];
+
+</code></pre>
+<p>We need to fetch this data in our component using a service. In the file <code>data.service.ts</code>, we will write a <code>getData()</code> method using the <code>httpClient</code> module from <code>@angular/common/http</code> which will fetch the data from the array we have created above.</p>
+<pre><code> 
+import { Injectable } from &#39;@angular/core&#39;;
+import {HttpClient} from &#39;@angular/common/http&#39;
+
+const URL = &#39;../assets/data.json&#39;;
+@Injectable({
+ providedIn: &#39;root&#39;
+})
+export class DataService {
+
+ constructor(private http: HttpClient) {
+ }
+
+ getData() {
+   return this.http.get(URL)
+ }
+}
+</code></pre>
+<aside class="special"><p>We&#39;ve given you the service template and the array to save you some time and make sure you&#39;re starting on a solid foundation. In the next section, you&#39;ll have an opportunity to write your own code.</p>
+</aside>
+<h2><strong>Fetching the data from the data service</strong></h2>
+<p>We need to import our service inside the component and then we can subscribe to the observable to get the object from <code>data.json</code></p>
+<p>We need to perform three steps for this:</p>
+<ul>
+<li>Initialising a component array      </li>
+<li>Subscribing to the Observable returned by <code>getData()</code> function</li>
+<li>Create an interface <em>Result </em>for type-checking the data after subscribing to the observable.</li>
+<li>Assign the data to the component array.</li>
+</ul>
+<h2>Initialising Component Array </h2>
+<p>We will declare and initialise the component array inside <code>slider.component.ts</code> that is an array of objects:</p>
+<p>To declare:</p>
+<pre><code>sliderArray: object[];</code></pre>
+<p>To initialize:</p>
+<pre><code>constructor(private data: DataService) {
+ this.sliderArray = [];
+}</code></pre>
+<p>Next, we need to import and initialize our service inside the constructor</p>
+<pre><code>constructor(private data: DataService) {
+ }</code></pre>
+<p>Now, we are ready to use our service, and to call our service methods.</p>
+<h2><strong>Getting data from Data Service</strong></h2>
+<p>To get the data out from the service, we will call the <code>getData()</code> method and subscribe to the observable that it will return, we will also create an interface <code>Result,</code>so that we can type check that we are getting the correct data.</p>
+<p>We will do this inside <code>ngOnInit</code> method:</p>
+<pre><code>this.data.getData().subscribe((result: Result)=&gt;{
+})</code></pre>
+<h2>Assigning data to Component Array </h2>
+<p>At the end, we will assign the data to the component array:</p>
+<pre><code>this.data.getData().subscribe((result: Result)=&gt;{  
+    this.sliderArray = result.sliderArray;
+})</code></pre>
+<p>Once we get the data inside our component&#39;s array, we can then bind our template with this data.</p>
+<p>In the <code>slider.component.html,</code> we already have a HTML template. Our next step is to bind this template with the <code>sliderArray</code>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Binding the data with the template" duration="40">
+        <p>We will bind the data with the template using <code>*ngFor</code> Directive and finally we will add transformations in the template to get the slider working.</p>
+<p>This contains three steps:</p>
+<ul>
+<li>Binding <code>sliderArray</code> to the template</li>
+<li>Adding Event Binding for slider buttons</li>
+<li>Adding css transforms using <code>ngStyle</code> and <code>ngClass</code></li>
+</ul>
+<h2><strong>Binding slideArray to the Component</strong></h2>
+<p>We have a container containing an <code>img-container</code>, <code>a</code> <code>text-container</code>, and <code>a</code> <code>slider.</code></p>
+<p>We will bind the data in all the three containers using <code>*ngFor</code> directive</p>
+<pre><code>&lt;div class=&#34;container&#34;&gt;
+ &lt;div class=&#34;img-container&#34;  *ngFor=&#34;let i of sliderArray; let select = index;&#34;&gt;
+   &lt;img src=&#34;{{i.img}}&#34; alt=&#34;{{i.alt}}&#34; &gt;
+ &lt;/div&gt;
+
+ &lt;div&gt;
+   &lt;div class=&#34;text-container&#34;&gt;
+     &lt;div class=&#34;page-text&#34; *ngFor=&#34;let i of sliderArray;let select = index;&#34;&gt;
+       &lt;h3&gt;{{i.text}}&lt;/h3&gt;
+     &lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&#34;slider&#34;&gt;
+ &lt;div class=&#34;slide-button-parent-container&#34;  *ngFor=&#34;let i of sliderArray; let x =index&#34;&gt;
+    &lt;div class=&#34;select-box&#34;&gt;
+     &lt;div class=&#34;slide-button&#34;&gt;
+     &lt;/div&gt;
+    &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2><strong>Event Binding to slideArray</strong></h2>
+<p>Once, the data is binded , we will bind the click event to every slide-button using angular <code>click binding</code>. We will create a function called <code>selected(x)</code>where x is the index of the array.</p>
+<pre><code>selected(x) {
+ this.downSelected(x);
+ this.selectedIndex = x;
+}
+
+downSelected(i) {
+this.transform =  100 - (i) * 50;
+  this.selectedIndex = this.selectedIndex + 1;
+  if(this.selectedIndex &gt; 4) {
+    this.selectedIndex = 0;
+  }
+}
+</code></pre>
+<p>Points to remember here:</p>
+<ul>
+<li>The downselected function decreases the value of transform property fifty times  the index passed on click of <code>selected</code> function. </li>
+<li>This logic translates the text container to 100%, 50%, -50%, -100% resulting in four different states.</li>
+</ul>
+<h2><strong>Adding CSS transforms using ngStyle &amp; ngClass</strong></h2>
+<p>Initially we set all images, at an opacity of zero, we add a class <code>selected</code> using <code>ngClass directive</code> when the selected index becomes equal to the image index. This <code>selected</code> class adds an opacity of one to the image making the image visible to the user.<br></p>
+<pre><code>&lt;div class=&#34;img-container&#34;  *ngFor=&#34;let i of sliderArray; let select = index;&#34;
+      [ngClass]=&#34;{&#39;selected&#39;: select == selectedIndex}&#34;&gt;
+&lt;/div&gt;
+</code></pre>
+<p>After this, we will  translate the text-container according to the <code>transform</code> value computed using <code>select()</code> function.</p>
+<pre><code>&lt;div [ngStyle]=&#34;{&#39;transform&#39;: &#39;translateY(&#39;+ transform + &#39;%&#39; +&#39;)&#39;, &#39;transition&#39;: &#39;.8s&#39;}&#34;&gt;
+&lt;/div&gt;</code></pre>
+<p>After you have performed all these steps, you can find out the final code as provided below:</p>
+<pre><code>&lt;div class=&#34;container&#34;&gt;
+ &lt;div class=&#34;img-container&#34;  *ngFor=&#34;let i of sliderArray; let select = index;&#34;
+      [ngClass]=&#34;{&#39;selected&#39;: select == selectedIndex}&#34;&gt;
+   &lt;img src=&#34;{{i.img}}&#34; alt=&#34;{{i.alt}}&#34; &gt;
+ &lt;/div&gt;
+
+ &lt;!--&lt;/div&gt;--&gt;
+ &lt;div [ngStyle]=&#34;{&#39;transform&#39;: &#39;translateY(&#39;+ transform + &#39;%&#39; +&#39;)&#39;, &#39;transition&#39;: &#39;.8s&#39;}&#34;&gt;
+   &lt;div class=&#34;text-container&#34;&gt;
+     &lt;div class=&#34;page-text&#34; *ngFor=&#34;let i of sliderArray;let select = index;&#34; [ngClass]=&#34;{&#39;selected&#39;: select == selectedIndex}&#34;&gt;
+       &lt;h3&gt;{{i.text}}&lt;/h3&gt;
+     &lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&#34;slider&#34;&gt;
+ &lt;div class=&#34;slide-button-parent-container&#34;  *ngFor=&#34;let i of sliderArray; let x =index&#34; (click)=&#34;selected(x)&#34; &gt;
+    &lt;div class=&#34;select-box&#34;&gt;
+     &lt;div   class=&#34;slide-button&#34; [ngClass]=&#34;{&#39;slide-button-select&#39;: x == selectedIndex}&#34; &gt;
+     &lt;/div&gt;
+    &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Transforming the component into the angular element" duration="10">
+        <p>This procedure consists of five steps:</p>
+<ul>
+<li>Using <code>Shadow DOM</code> for angular Element</li>
+<li>Making use of <code>entryComponents</code></li>
+<li>Importing and using <code>CreateCustomElement</code> module from <code>@angular/elements</code></li>
+<li>Defining our <code>custom-element</code></li>
+<li>Running <code>ngDoBootstrap</code> Method</li>
+</ul>
+<h2><strong>Using Shadow DOM for angular element</strong></h2>
+<p>Now we have our image-slider running, we just need to make it an <code>Angular Element</code>.</p>
+<p>The fun part is that, there is only a minor change for making the component DOM, a shadow DOM.</p>
+<p>We need to import <code>ViewEncapsulation</code> module and have to use the <code>Native</code> method from it.</p>
+<pre><code>@Component({
+ selector: &#39;app-slider&#39;,
+ templateUrl: &#39;./slider.component.html&#39;,
+ styleUrls: [&#39;./slider.component.css&#39;],
+ encapsulation: ViewEncapsulation.Native
+})</code></pre>
+<h2><strong>Making use of entryComponents</strong></h2>
+<p>The entry Component is a component that angular loads imperatively.  You specify an entry component by bootstrapping it in an NgModule.</p>
+<p>Here, we will specify our <code>SliderComponent</code> in the <code>entryComponents</code> array inside <code>@NgModule </code></p>
+<pre><code>@NgModule({
+ declarations: [
+   SliderComponent
+ ],
+ imports: [
+   BrowserModule,
+   HttpClientModule
+ ],
+ entryComponents: [SliderComponent],
+})</code></pre>
+<h2><strong>Importing and using createCustomElement Module</strong></h2>
+<p>Here, we need to use the <code>createCustomElement</code> Module from <code>@angular/elements.</code></p>
+<p>You need to use the <code>SliderComponent,</code> as a parameter to the <code>createCustomElement</code> function. After that, we need to register the <code>slider</code> in the DOM. </p>
+<pre><code>import { createCustomElement } from &#39;@angular/elements&#39;;
+
+export class AppModule {
+ constructor(private injector: Injector) {
+   const slider = createCustomElement(SliderComponent, { injector });
+    }
+}</code></pre>
+<p>To register the slider as a DOM element, we will define it using <code>customElements.define</code> method.</p>
+<pre><code>customElements.define(&#39;motley-slider&#39;, slider);</code></pre>
+<p>Finally, we have to bootstrap this custom-element using the <code>ngDoBootstrap()</code> method. The complete code will look like this:</p>
+<pre><code>import { BrowserModule } from &#39;@angular/platform-browser&#39;;
+import { NgModule, Injector } from &#39;@angular/core&#39;;
+import { createCustomElement } from &#39;@angular/elements&#39;;
+import { SliderComponent } from &#39;./slider/slider.component&#39;;
+import {HttpClientModule} from &#34;@angular/common/http&#34;;
+
+@NgModule({
+ declarations: [
+   SliderComponent
+ ],
+ imports: [
+   BrowserModule,
+   HttpClientModule
+ ],
+ entryComponents: [SliderComponent],
+})
+export class AppModule {
+ constructor(private injector: Injector) {
+   const slider = createCustomElement(SliderComponent, { injector });
+   customElements.define(&#39;motley-slider&#39;, slider);
+ }
+
+ ngDoBootstrap() {}
+
+}</code></pre>
+<p>Packaging the Angular Element</p>
+<p>We need to modify <code>package.json</code> with our new commands, we will modify the script object inside the <code>package.json</code> file.</p>
+<p>Let&#39;s check our modified script object:</p>
+<pre><code>&#34;scripts&#34;: {
+ &#34;ng&#34;: &#34;ng&#34;,
+ &#34;start&#34;: &#34;ng serve&#34;,
+ &#34;build&#34;: &#34;ng build --prod --output-hashing=none&#34;,
+ &#34;package&#34;: &#34;cat dist/my-app/{runtime,polyfills,scripts,main}.js | gzip &gt; elements.js.gz&#34;,
+ &#34;serve&#34;: &#34;http-server&#34;,
+ &#34;test&#34;: &#34;ng test&#34;,
+ &#34;lint&#34;: &#34;ng lint&#34;,
+ &#34;e2e&#34;: &#34;ng e2e&#34;
+}
+</code></pre>
+<p>Now, we can run the command <code>ng build &amp; ng package</code> and finally we will run ng serve to serve the dist/ folder generated using the build command. Also, we can use the <code>gzip</code> obtained from the <code>ng package</code> command, extract it and can publish it as an <code>npm module</code>.</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-49880327-14', 'auto');
+
+    (function() {
+      var gaCodelab = '';
+      if (gaCodelab) {
+        ga('create', gaCodelab, 'auto', {name: 'codelab'});
+      }
+
+      var gaView;
+      var parts = location.search.substring(1).split('&');
+      for (var i = 0; i < parts.length; i++) {
+        var param = parts[i].split('=');
+        if (param[0] === 'viewga') {
+          gaView = param[1];
+          break;
+        }
+      }
+      if (gaView && gaView !== gaCodelab) {
+        ga('create', gaView, 'auto', {name: 'view'});
+      }
+    })();
+  </script>
+
+</body>
+</html>

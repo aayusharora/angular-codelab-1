@@ -1,0 +1,23 @@
+{
+  "environment": "web",
+  "source": "1BJrDNXwdCjNQ4r_RfGBiDvnswZBUGvvEsVLW8M_vZzA",
+  "format": "html",
+  "prefix": "../../",
+  "mainga": "UA-49880327-14",
+  "updated": "2018-06-10T19:32:26Z",
+  "id": "angular-slider-element",
+  "duration": 140,
+  "title": "Building an image-slider element using Angular 6",
+  "author": "petele",
+  "summary": "In this codelab, you'll build an image-slider,, which works independently of Angular framework, can be imported in any framework, and is very easy to integrate.",
+  "theme": "web",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "Web"
+  ],
+  "tags": [],
+  "feedback": "https://github.com/googlecodelabs/angular-slider-el/issues",
+  "url": "angular-slider-element"
+}
